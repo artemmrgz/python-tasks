@@ -1,17 +1,20 @@
-def check_envelopes(a, b, c, d):
-    if a == c and b == d:
-        return 'Equal'
+class Envelope:
+    def __init__(self, a, b):
+        self.a = a
+        self.b = b
 
-    if a < b:
-        a, b = b, a
-    if c < d:
-        c, d = d, c
+    def fits_into(self, other) -> bool:
+        '''Checks if sides of object lesser than other object's sides.
+        Bigger side is always first
+        '''
+        side_a, side_b = sorted((self.a, self.b))
+        other_a, other_b = sorted((other.a, other.b))
 
-    if a >= c and b >= d:
-        return 'First is bigger'
-    if a <= c and b <= d:
-        return 'Second is bigger'
-    return 'No one'
+        return side_a < other_a and side_b < other_b
+
+
+def is_valid(value):
+    return value > 0
 
 
 def main():
@@ -23,16 +26,19 @@ def main():
         print('Please enter sides of second envelope')
         c = float(input('Enter side c: '))
         d = float(input('Enter side d: '))
-
-        result = check_envelopes(a, b, c, d)
-        print(result)
-        answer = input("Press 'y' or 'yes' if you want to continue ").lower()
-        if answer != 'y' and answer != 'yes':
-            flag = False
+        if is_valid(a) and is_valid(b) and is_valid(c) and is_valid(d):
+            first_env = Envelope(a, b)
+            second_env = Envelope(c, d)
+            if first_env.fits_into(second_env):
+                print('First envelope can be fitted into second one')
+            else:
+                print('First envelope can\'t be fitted into second one')
+            answer = input("Press 'y' or 'yes' if you want to continue ").lower()
+            if answer != 'y' and answer != 'yes':
+                flag = False
+        else:
+            print('Value should be non-negative number')
 
 
 if __name__ == '__main__':
-    try:
-        main()
-    except ValueError:
-        print('Integer or float number expected')
+    main()

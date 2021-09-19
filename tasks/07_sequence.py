@@ -21,10 +21,13 @@ class Sequence:
         return [num for num in range(border)]
 
 
-if __name__ == '__main__':
+def main():
     try:
         value = float(input('Please enter a number: '))
         sequence = Sequence(value)
         print(sequence)
     except ValueError as e:
         print(e)
+
+if __name__ == '__main__':
+    main()

@@ -14,39 +14,30 @@ def is_lucky_piter(ticket):
 
 def file_reader(path_to_file):
     with open(path_to_file) as f:
-        content = f.read()
+        content = f.readlines()
     return content
 
 
-def find_valid_tickets(text):
-    tickets = text.split()
+def find_valid_tickets(tickets):
     valid_tickets = filter(lambda x: len(x) == 6, tickets)
     return valid_tickets
 
 
-def find_lucky_tickets(tickets, method):
-    counter = 0
-    for ticket in tickets:
-        if method(ticket):
-            counter += 1
-    return counter
-
-
 def main():
-    path_to_file = input('Please enter path to file: ')
-    method = input('Please choose method of selecting lucky tickets (Moscow or Piter): ')
-    content = file_reader(path_to_file)
-    tickets = find_valid_tickets(content)
-    if method == 'Moscow':
-        return find_lucky_tickets(tickets, is_lucky_moscow)
-    if method == 'Piter':
-        return find_lucky_tickets(tickets, is_lucky_piter)
-    return 'No tickets found'
+    try:
+        path_to_file = input('Please enter path to file: ')
+        method = input('Please choose method of selecting lucky tickets (Moscow or Piter): ')
+        content = file_reader(path_to_file)
+        tickets = find_valid_tickets(content)
+        if method == 'Moscow':
+            print(sum(filter(is_lucky_moscow, tickets)))
+        elif method == 'Piter':
+            print(sum(filter(is_lucky_piter, tickets)))
+        else:
+            print('No tickets found')
+    except FileNotFoundError:
+        print("File can't be found, please check and try again")
 
 
 if __name__ == '__main__':
-    try:
-        result = main()
-        print(result)
-    except FileNotFoundError:
-        print("File can't be found, please check and try again")
+    main()

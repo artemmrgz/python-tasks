@@ -2,30 +2,34 @@ import argparse
 
 
 class Chessboard:
+    '''Class for chessboard constructing
+    Args:
+            height (int): number of rows
+            width (int): length of rows
+    '''
+
     def __init__(self, height, width):
-        self.height = self.__check_value(height)
-        self.width = self.__check_value(width)
+        self.height = height
+        self.width = width
+        self.board = self.create_board()
 
-    def __str__(self):
-        board = self.__create_board()
-        rows_to_str = [''.join(rows) for rows in board]
-        return '\n'.join(rows_to_str)
+    def __repr__(self):
+        return '\n'.join(self.rows_to_str())
 
-
-    @staticmethod
-    def __check_value(value):
-        if value > 0:
-            return value
-        raise ValueError('Incorrect value. Value should be non-negative integer')
-
-
-    def __create_board(self):
-        board = [['*' for i in range(self.width)] for j in range(self.height)]
+    def create_board(self):
+        board = [['*' for _ in range(self.width)] for _ in range(self.height)]
         for i in range(len(board)):
             for j in range(len(board[i])):
                 if (i % 2 == 0 and j % 2 == 1) or (i % 2 == 1 and j % 2 == 0):
                     board[i][j] = ' '
         return board
+
+    def rows_to_str(self):
+        return [''.join(rows) for rows in self.board]
+
+
+def is_valid(value):
+    return value >= 0
 
 
 def create_parser():
@@ -35,10 +39,14 @@ def create_parser():
     return parser.parse_args()
 
 
-if __name__ == '__main__':
+def main():
     args = create_parser()
-    try:
+    if is_valid(args.height) and is_valid(args.width):
         board = Chessboard(args.height, args.width)
         print(board)
-    except ValueError as e:
-        print(e)
+    else:
+        print('Value should be non-negative integer')
+
+
+if __name__ == '__main__':
+    main()
