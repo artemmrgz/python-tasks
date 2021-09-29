@@ -1,5 +1,5 @@
 import argparse
-
+from tasks.checkers import is_valid, is_yes
 
 class Chessboard:
     '''Class for chessboard constructing
@@ -28,12 +28,9 @@ class Chessboard:
         return [''.join(rows) for rows in self.board]
 
 
-def is_valid(value):
-    return value >= 0
-
-
 def create_parser():
-    parser = argparse.ArgumentParser(description='Program draws a chessboard with height and width provided by user')
+    parser = argparse.ArgumentParser(description='Program draws a chessboard with height and width provided by user',
+                                     usage="To start program type 'chessboard.py <height> <width>'")
     parser.add_argument('height', type=int, help='height of the chessboard')
     parser.add_argument('width', type=int, help='width of the chessboard')
     return parser.parse_args()
@@ -41,12 +38,14 @@ def create_parser():
 
 def main():
     args = create_parser()
-    if is_valid(args.height) and is_valid(args.width):
-        board = Chessboard(args.height, args.width)
-        print(board)
-    else:
-        print('Value should be non-negative integer')
+    if not all([is_valid(args.height), is_valid(args.width)]):
+        raise ValueError('Value should be non-negative integer')
+    board = Chessboard(args.height, args.width)
+    print(board)
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except ValueError as e:
+        print(e)

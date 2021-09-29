@@ -1,4 +1,5 @@
 import math
+from tasks.checkers import is_yes
 
 
 class InputError(Exception):
@@ -32,7 +33,7 @@ def parse_input(input_str):
     '''
     values = input_str.split(',')
     if len(values) != 4:
-        raise InputError('Input should consist of 4 arguments')
+        raise InputError('Input should consist of 4 arguments separated by comma')
     stripped_values = list(map(lambda x: x.strip(), values))
     name, sides = stripped_values[0], stripped_values[1:]
     side_a, side_b, side_c = map(lambda x: float(x), sides)
@@ -51,28 +52,30 @@ def generate_output(triangles_list):
 
 
 def main():
-    try:
-        triangles = []
-        flag = True
-        while flag:
-            input_string = input('Enter triangle name and 3 sizes using comma as a delimiter ')
+    triangles = []
+    while True:
+        input_string = input('Enter triangle name and 3 sizes using comma as a delimiter ')
+        try:
             name, side_a, side_b, side_c = parse_input(input_string)
-            if not is_valid(side_a, side_b, side_c):
-                raise ValueError('Sides should be positive and sum of any of two sides should be bigger than third one')
-            triangle = Triangle(name, side_a, side_b, side_c)
-            triangles.append(triangle)
-            answer = input("Press 'y' or 'yes' if you want to continue ").lower()
-            if answer != 'y' and answer != 'yes':
-                flag = False
+        except InputError as e:
+            if is_yes(f"{e}. Press 'y' or 'yes' if you want to try again "):
+                continue
+            break
 
-            triangles.sort(reverse=True, key=lambda x: x.area)
-            output = generate_output(triangles)
-            print(output)
-    except InputError as e:
-        print(e)
-    except ValueError as e:
-        print(e)
+        if not is_valid(side_a, side_b, side_c):
+            raise ValueError('Sides should be positive and sum of any of two sides should be bigger than third one')
+        triangle = Triangle(name, side_a, side_b, side_c)
+        triangles.append(triangle)
+        if not is_yes("Press 'y' or 'yes' if you want to continue "):
+            break
+
+        triangles.sort(reverse=True, key=lambda x: x.area)
+        output = generate_output(triangles)
+        print(output)
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except ValueError as e:
+        print(e)
