@@ -11,14 +11,14 @@ class SquaresSequence:
     """
 
     def __init__(self, n):
-        self.n = n
+        self.number = n
 
     def __repr__(self):
         return ', '.join(map(str, self.row_sequence))
 
     @property
     def row_sequence(self) -> list:
-        border = math.ceil(math.sqrt(self.n))
+        border = math.ceil(math.sqrt(self.number))
         return list(range(border))
 
 
