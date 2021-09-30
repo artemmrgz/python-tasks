@@ -28,19 +28,20 @@ class Chessboard:
         return [''.join(rows) for rows in self.board]
 
 
-def create_parser():
+def get_args():
     parser = argparse.ArgumentParser(description='Program draws a chessboard with height and width provided by user',
                                      usage="To start program type 'chessboard.py <height> <width>'")
     parser.add_argument('height', type=int, help='height of the chessboard')
     parser.add_argument('width', type=int, help='width of the chessboard')
-    return parser.parse_args()
+    args = parser.parse_args()
+    return args.height, args.width
 
 
 def main():
-    args = create_parser()
-    if not all([is_valid(args.height), is_valid(args.width)]):
+    height, width = get_args()
+    if not all([is_valid(height), is_valid(width)]):
         raise ValueError('Value should be non-negative integer')
-    board = Chessboard(args.height, args.width)
+    board = Chessboard(height, width)
     print(board)
 
 

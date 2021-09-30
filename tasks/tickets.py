@@ -31,24 +31,23 @@ class InputError(Exception):
     pass
 
 
-def create_parser():
-    parser = argparse.ArgumentParser(description='Program counts number of lucky tickets from selected file',
-                                     usage="To start program type 'tickets.py <path to file> <method>'")
+def get_args():
+    parser = argparse.ArgumentParser(description='Program counts number of lucky tickets from selected file')
     parser.add_argument('path', help='path to file with tickets')
     parser.add_argument('method', help='method of counting lucky tickets (Moscow or Piter)')
-    return parser.parse_args()
+    args = parser.parse_args()
+    return args.path, args.method.lower()
 
 
 def main():
-    args = create_parser()
-    path_to_file = args.path
-    method = args.method.lower()
+    path_to_file, method = get_args()
     content = FileOperator(path_to_file).content
     tickets = find_valid_tickets(content)
     if not choose(method):
         raise InputError('Incorrect method selected')
     lucky_tickets = list(filter(choose(method), tickets))
     print(len(lucky_tickets))
+
 
 if __name__ == '__main__':
     try:

@@ -13,25 +13,26 @@ class TextParser(FileOperator):
         self.save(new)
 
 
-def create_parser():
+def get_args():
     parser = argparse.ArgumentParser(description='Count or replace strings in a file')
     parser.add_argument('path', help='Path to file')
     parser.add_argument('to_find', help='String that should be found in the file')
     parser.add_argument('to_replace', nargs='?', default=None, help='String that should be changed to. \
                                                                     It\'s empty by default')
-    return parser.parse_args()
+    args = parser.parse_args()
+    return args.path, args.to_find, args.to_replace
 
 
 def main():
-    args = create_parser()
-    text_object = TextParser(args.path)
-    counts = text_object.count(args.to_find)
-    if args.to_replace:
+    path, to_find, to_replace = get_args()
+    text_object = TextParser(path)
+    counts = text_object.count(to_find)
+    if to_replace:
         if counts > 1 and is_yes(
                 f"We found {counts} occurrences of the string. Type 'y' or 'yes' if you want to change all of them "):
-            text_object.replace(args.to_find, args.to_replace, counts)
+            text_object.replace(to_find, to_replace, counts)
         else:
-            text_object.replace(args.to_find, args.to_replace)
+            text_object.replace(to_find, to_replace)
         print('File was changed')
     else:
         print(counts)
