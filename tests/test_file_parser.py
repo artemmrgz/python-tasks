@@ -1,7 +1,6 @@
 import os
 from unittest import TestCase, mock
 from tasks.file_parser import TextParser, main
-from collections import namedtuple
 
 
 class FakeFile:
@@ -35,11 +34,7 @@ class TestFileParser(TestCase):
         Poor Cinderella had to work hard all day long so the others could rest.''')
 
     def test_main(self):
-        FakeParser = namedtuple('FakeParser', ['path', 'to_find', 'to_replace'])
-        parser1 = FakeParser('some/path', 'a', 'b')
-        parser2 = FakeParser(os.path.abspath(__file__), 'a', 'b')
-
-        with mock.patch('tasks.file_parser.get_args', side_effect=[parser1, parser2]):
+        with mock.patch('tasks.file_parser.get_args', side_effect=[('some/path', 'a', 'b'), (os.path.abspath(__file__), 'a', 'b')]):
             with mock.patch('tasks.file_parser.TextParser.count', return_value=1):
                 with mock.patch('tasks.file_parser.TextParser.replace', return_value=None):
                     self.assertRaises(FileNotFoundError, main)

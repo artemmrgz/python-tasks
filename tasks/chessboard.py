@@ -1,3 +1,4 @@
+import sys
 import argparse
 from tasks.checkers import is_valid, is_yes
 
@@ -33,6 +34,9 @@ def get_args():
                                      usage="To start program type 'chessboard.py <height> <width>'")
     parser.add_argument('height', type=int, help='height of the chessboard')
     parser.add_argument('width', type=int, help='width of the chessboard')
+    if len(sys.argv) == 1:
+        parser.print_help(sys.stderr)
+        sys.exit(1)
     args = parser.parse_args()
     return args.height, args.width
 

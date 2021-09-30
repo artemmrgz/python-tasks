@@ -1,5 +1,4 @@
 from unittest import mock, TestCase
-from collections import namedtuple
 from tasks.fibonacci import FibonacciSequence, main
 
 
@@ -13,10 +12,7 @@ class TestSequence(TestCase):
         self.assertEqual(repr(fib), '1, 1, 2, 3')
 
     def test_main(self):
-        FakeParser = namedtuple('FakeParser', ['start', 'stop'])
-        parser1 = FakeParser(2, 10)
-        parser2 = FakeParser(-4, 4)
-        with mock.patch('tasks.fibonacci.get_args', side_effect=[parser1, parser2]):
+        with mock.patch('tasks.fibonacci.get_args', side_effect=[(2, 10), (-4, 4)]):
             with mock.patch('tasks.fibonacci.print', return_value='fake_output'):
                 self.assertEqual(main(), None)
                 self.assertRaises(ValueError, main)

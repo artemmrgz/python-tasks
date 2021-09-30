@@ -7,9 +7,9 @@ class InputError(Exception):
 
 
 class Triangle:
-    '''The class holds triangle object data.
+    """The class holds triangle object data.
     Note that the sum of any two sides should be bigger than third one
-    '''
+    """
 
     def __init__(self, name, a, b, c):
         self.name = name

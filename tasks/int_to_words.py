@@ -1,4 +1,9 @@
 class Number:
+    """Converts integer to words
+    Args:
+        num (int): any integer
+    """
+
     ones = {0: '', 1: 'один', 2: 'два', 3: 'три', 4: 'четыре', 5: 'пять', 6: 'шесть', 7: 'семь', 8: 'восемь',
             9: 'девять', 10: 'десять', 11: 'одиннадцать', 12: 'двенадцать', 13: 'тринадцать', 14: 'четырнадцать',
             15: 'пятнадцать', 16: 'шестнадцать', 17: 'семнадцать', 18: 'восемнадцать', 19: 'девятнадцать'}
@@ -13,7 +18,7 @@ class Number:
     def __init__(self, num):
         self.number = num
 
-    def stringify(self):
+    def to_words(self) -> str:
         if self.number == 0:
             return 'ноль'
         return self._word_generator(self.number)
@@ -48,7 +53,7 @@ class Number:
 def main():
     number = int(input('Please enter the number: '))
     num = Number(number)
-    output = num.stringify()
+    output = num.to_words()
     print(output)
 
 

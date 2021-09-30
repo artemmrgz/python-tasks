@@ -1,3 +1,4 @@
+import sys
 import argparse
 from tasks.checkers import is_yes
 from tasks.file_manager import FileOperator
@@ -19,6 +20,9 @@ def get_args():
     parser.add_argument('to_find', help='String that should be found in the file')
     parser.add_argument('to_replace', nargs='?', default=None, help='String that should be changed to. \
                                                                     It\'s empty by default')
+    if len(sys.argv) == 1:
+        parser.print_help(sys.stderr)
+        sys.exit(1)
     args = parser.parse_args()
     return args.path, args.to_find, args.to_replace
 

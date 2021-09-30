@@ -19,9 +19,6 @@ class TestFileParser(TestCase):
         self.assertEqual(len(list(find_valid_tickets(''))), 0)
 
     def test_main(self):
-        FakeParser = namedtuple('FakeParser', ['path', 'method'])
-        parser1 = FakeParser('some/path', 'moscow')
-        parser2 = FakeParser(os.path.abspath(__file__), 'some_method')
-        with mock.patch('tasks.tickets.get_args', side_effect=[parser1, parser2]):
+        with mock.patch('tasks.tickets.get_args', side_effect=[('some/path', 'moscow'), (os.path.abspath(__file__), 'some_method')]):
             self.assertRaises(FileNotFoundError, main)
             self.assertRaises(InputError, main)

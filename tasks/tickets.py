@@ -1,3 +1,4 @@
+import sys
 import argparse
 from tasks.file_manager import FileOperator
 
@@ -35,6 +36,9 @@ def get_args():
     parser = argparse.ArgumentParser(description='Program counts number of lucky tickets from selected file')
     parser.add_argument('path', help='path to file with tickets')
     parser.add_argument('method', help='method of counting lucky tickets (Moscow or Piter)')
+    if len(sys.argv) == 1:
+        parser.print_help(sys.stderr)
+        sys.exit(1)
     args = parser.parse_args()
     return args.path, args.method.lower()
 
