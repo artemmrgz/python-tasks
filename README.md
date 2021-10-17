@@ -1,1 +1,1 @@
-# softserve-academy
+# softserve academy tasks
